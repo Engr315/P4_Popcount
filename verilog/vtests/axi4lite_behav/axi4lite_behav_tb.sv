@@ -103,11 +103,16 @@ module axi4lite_behav_tb();
         end
         
         @(negedge clk);
+        test_write_data = 32'hffffffff;
+        #1
+        $display("Writing Data: %h", test_write_data);
+        master_agent.AXI4LITE_WRITE_BURST(mmio_addr + 32'h4 ,prot,test_write_data, resp);
+        @(negedge clk);
 
         //read output from register
         master_agent.AXI4LITE_READ_BURST(mmio_addr+32'h4, prot, test_read_data, resp);      
         $display( "Read Data: %h", test_read_data );
-        assert( test_read_data == 7) else $fatal(1, "Bad Test Response: %d != %d", test_read_data, 7);
+        assert( test_read_data == 39) else $fatal(1, "Bad Test Response: %d != %d", test_read_data, 39);
         
         $display("@@@Passed");
         
