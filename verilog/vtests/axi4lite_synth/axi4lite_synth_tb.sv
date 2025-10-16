@@ -160,10 +160,13 @@ initial begin
     end
 
     @(negedge ACLK);
+	$display("Writing Data: ffffffff");
+	send_word_axi4lite( mmio_addr + 4'h4, 32'hffffffff);
+    @(negedge ACLK);
     
     recv_word_axi4lite(mmio_addr + 32'h4, recv_data); 
     $display( "Read Data: %h", recv_data);
-    assert( recv_data == 7) else $fatal(1, "Bad Test Response: %d != %d", recv_data, 7);
+	assert( recv_data == 39) else $fatal(1, "Bad Test Response: %d != %d", recv_data, 39);
     
     $display("@@@Passed");
     $finish;
